@@ -1,35 +1,19 @@
 const ISSUE_FIELD_DEFS = [
     {
-      id: 'id',
-      outboundType: 'numeric',
-      title: 'Issue ID',
+      id: 'title',
+      outboundType: 'text',
+      title: 'Ticket title',
     },
     {
-      id: 'key',
+      id: 'url',
       outboundType: 'text',
-      title: 'Issue Key',
+      title: 'Ticket url',
     },
     {
-      id: 'description',
+      id: 'body',
       outboundType: 'text',
-      title: 'Issue Description',
-    },
-    {
-      id: 'priority',
-      outboundType: 'text',
-      title: 'Priority Field',
-    },
-    {
-      id: 'status',
-      outboundType: 'text',
-      title: 'Status Name',
-    },
-    {
-      id: 'creator',
-      outboundType: 'text',
-      title: 'Creator Name',
+      title: 'Ticket body',
     }
   ];
-  
+
   module.exports = { ISSUE_FIELD_DEFS };
-  

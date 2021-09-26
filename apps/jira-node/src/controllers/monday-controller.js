@@ -54,14 +54,26 @@ async function getFieldDefs(req, res) {
   }
 }
 
+async function getRemoteListProjects(req, res) {
+  try {
+    return res.status(200).send([
+      {key: '1', value: 'The best project'},
+      {key: '2', value: 'Another project'}
+    ]);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send({ message: 'internal server error' });
+  }
+}
+
 async function getItemByIssueOrCreateIfNotExists(shortLivedToken, boardId, columnId, issueId, name, columnValues) {
   try {
     const itemList = await mondayService.queryItemValues(shortLivedToken, boardId, columnId)
     const itemArray = itemList.filter(item => (item?.column_values[0]?.value && JSON.parse(item.column_values[0].value).entity_id === issueId))
-    if (itemArray.length === 0){ await mondayService.createItem(shortLivedToken, boardId, name, columnValues) } 
-    else { 
+    if (itemArray.length === 0){ await mondayService.createItem(shortLivedToken, boardId, name, columnValues) }
+    else {
       const itemId = itemArray[0].id;
-      await mondayService.changeMultipleColumnValues(shortLivedToken, boardId, itemId, columnValues) 
+      await mondayService.changeMultipleColumnValues(shortLivedToken, boardId, itemId, columnValues)
     }
   } catch (err) {
     console.log(err);
@@ -73,7 +85,7 @@ async function executeAction(req, res) {
   const { payload } = req.body;
   const { shortLivedToken } = req.session;
   const { inboundFieldValues } = payload;
-  const { issueId, boardId, itemMapping } = inboundFieldValues; 
+  const { issueId, boardId, itemMapping } = inboundFieldValues;
   const { name } = itemMapping;
   const columnId = await findOrCreateColumn(shortLivedToken, boardId);
   try {
@@ -90,5 +102,6 @@ module.exports = {
   subscribe,
   unsubscribe,
   getFieldDefs,
-  executeAction
+  executeAction,
+  getRemoteListProjects
 };
